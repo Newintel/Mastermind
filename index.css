@@ -1,0 +1,70 @@
+body{
+	background: lightgrey;
+}
+.Square{
+	border: solid 1px;
+	width: 50px;
+	height: 50px;
+	clear: none;
+	float: left;
+	margin:2px;
+}
+#player{
+	border: solid black 2px;
+	margin: auto;
+	width: 400px;
+	clear: none;
+}
+#inputPanel{
+	width:224px;
+	float:left;
+}
+div#button{
+	vertical-align: middle;
+	margin:0;
+}
+p, h3{
+	text-align: center;
+}
+.sub{
+	border: solid black 0.5px;
+	width:24px;
+	height:24px;
+	float:left;
+}
+#choicePanel{
+	border: solid 1px black;
+	height: 200px;
+	width: 300px;
+	float: left;
+	clear: both;
+	visibility: hidden;
+}
+#tries{
+	border: solid 1px black;
+	margin-top: 10px;
+	margin-left: 20px;
+	float: left;
+	width: 336px;
+}
+button{
+	float:none;
+	margin: 42px;
+	margin-bottom:35px;
+	width: 80px;
+	vertical-align: middle;
+	overflow: auto;
+	font-size:20px;
+	background-image: linear-gradient(45deg, lightblue, blue);
+	color: white;
+}
+button:hover{
+	border:2px;
+}
+div{
+	/*border:solid black 1px;*/
+	overflow: auto;
+}
+#Replay{
+	display:none;
+}
