@@ -29,12 +29,15 @@
 
 	let done = false;
 	const colors = ["white", "red", "green", "orange", "purple", "pink", "blue", "grey"];
-	const clickedInputs = new Array(4).fill(false);
+	const clickedInput = new Array(4).fill(false);
 	let round = 0;
 	const find = [];
 	for (let i in range(4)){
 		find[i] = colors[Math.floor(Math.random()*8)];
 	}
+	const inputSquares = new Array(4);
+	const choiceSquares = new Array(8);
+
 
 	function Verify(ar){
 		const find2 = [...find]
@@ -73,7 +76,7 @@
 			document.getElementById("nice").innerHTML = (round === 12) ? `Desole ${name}, mais tu as perdu... :(` : `Bravo ${name}, tu as gagne!`;
 			document.querySelector("#EndText").innerHTML = "La bonne réponse etait:";
 			for (let i in range(4)){
-				document.querySelector("#input" + i).style.backgroundColor = find[i]
+				document.querySelector("#input" + i).style.backgroundColor = find[i];
 			}
 		}
 	}
@@ -82,7 +85,7 @@
 	class Square extends React.Component{
 		constructor(props){
 			super(props);
-			const bg = this.props.bg ? this.props.bg : "white"
+			const bg = this.props.bg ? this.props.bg : "white";
 			this.state = {
 				type: this.props.type,
 				value:this.props.value,
@@ -90,10 +93,15 @@
 				border: "black",
 				bg: bg
 			};
+			if (this.state.type === "input"){
+				inputSquares[this.props.value] = this;
+			} else if (this.state.type === "choice") {
+				choiceSquares[this.props.value] = this;
+			}
 		}
 
 		render(){
-			const id = this.state.type + this.state.value
+			const id = this.state.type + this.state.value;
 			return (
 				<div
 					className="Square"
@@ -113,19 +121,19 @@
 		}
 
 		inputHandleClick(){
-			const clicked = !this.state.clicked;
-			const color = clicked ? "red" : "black";
-			this.setState({clicked: clicked, border:color});
-			clickedInputs[this.state.value] = clicked;
-			document.getElementById("choicePanel").style.visibility = (clickedInputs.indexOf(true) === -1) ? "hidden" : "visible";
+			if (clickedInput.indexOf(true) === -1 || this.state.clicked){
+				const clicked = !this.state.clicked;
+				const color = clicked ? "red" : "black";
+				this.setState({clicked: clicked, border:color});
+				clickedInput[this.state.value] = clicked;
+				document.getElementById("choicePanel").style.visibility = (clickedInput.indexOf(true) === -1) ? "hidden" : "visible";
+			}
 		}
 
 		choiceHandleClick(){
-			for (let i in clickedInputs){
-				if (clickedInputs[i]){
-					document.getElementById("input" + i).style.backgroundColor = this.state.bg;
-				}
-			}
+			const clickedOne = clickedInput.indexOf(true);
+			document.getElementById("input" + clickedOne).style.backgroundColor = this.state.bg;
+			inputSquares[clickedOne].inputHandleClick();
 		}
 	}
 

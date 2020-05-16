@@ -39,13 +39,17 @@ p, h3{
 	float: left;
 	clear: both;
 	visibility: hidden;
+	position: absolute;
+	z-index: 1;
 }
 #tries{
 	border: solid 1px black;
+	margin: 0 auto;
 	margin-top: 10px;
-	margin-left: 20px;
-	float: left;
+	float: none;
 	width: 336px;
+	position: relative;
+	z-index: -1;
 }
 button{
 	float:none;
