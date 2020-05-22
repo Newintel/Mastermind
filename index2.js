@@ -13,17 +13,11 @@
 (function() {
 	'use strict';
 	let name = prompt("Comment t'appelles tu?");
-	const range = (start, end, step = 1) =>{
-		if (!end) {
-			end = start;
-			start = 0;
-		};
+	const range = (start, end = start, step = 1) =>{
+		(end === start) && (() => start = 0)();
 		const range = [];
 		let index = 0;
-		for (let i = start; i < end; i += step) {
-			range[index] = i;
-			index ++;
-		};
+		for (let i = start; i < end; i += step) range[index++] = i;
 		return range;
 	}
 
@@ -36,13 +30,10 @@
 		find[i] = colors[Math.floor(Math.random()*8)];
 	}
 	const inputSquares = new Array(4);
-	const choiceSquares = new Array(8);
-
 
 	function Verify(ar){
-		const find2 = [...find]
-		let good = 0;
-		let perfect = 0;
+		const find2 = [...find];
+		let [good, perfect] = [0, 0];
 		for (let i = 0; i < find2.length; i++){
 			if (ar[i] === find2[i]){
 				ar.splice(i, 1);
@@ -93,11 +84,7 @@
 				border: "black",
 				bg: bg
 			};
-			if (this.state.type === "input"){
-				inputSquares[this.props.value] = this;
-			} else if (this.state.type === "choice") {
-				choiceSquares[this.props.value] = this;
-			}
+			(this.state.type === 'input') && (() => inputSquares[this.state.value] = this)();
 		}
 
 		render(){
@@ -106,14 +93,11 @@
 				<div
 					className="Square"
 					id={id}
-					value={this.state.value}
-					onClick={() => {
-						if (this.state.type === "input"){
-							this.inputHandleClick();
-						} else if (this.state.type === "choice") {
-							this.choiceHandleClick();
-						}
-					}}
+					onClick={() =>
+						this.state.type === "input" && this.inputHandleClick() 
+						|| 
+						this.state.type === "choice" && this.choiceHandleClick()
+					}
 					style={{borderColor:this.state.border, backgroundColor:this.state.bg}}
 				>
 				</div>
@@ -160,8 +144,7 @@
 					<button
 						onClick={() =>{
 							if (round <= 12){
-								round ++;
-								document.getElementById("round").innerHTML = `Round ${round}`;
+								document.getElementById("round").innerHTML = `Round ${++round}`;
 								const choice = [];
 								for (let i in range(4)){
 									const col = document.getElementById(`input${i}`).style.backgroundColor;
@@ -195,7 +178,7 @@
 	function ChoicePanel(){
 		return (
 			<div id="choicePanel">
-				<p>Choisissez des couleurs</p>
+				<p>Choisissez une couleur</p>
 				{range(8).map((i) => <Square value={i} key={i} type="choice" bg={colors[i]} />)}
 			</div>
 		)
@@ -205,7 +188,7 @@
 		return (
 			<div>
 				<div>
-					<p id="nice">{(name.toLowerCase() === "matteo") ? "Bienvenue, cher beta-testeur!":`Salut, ${name}`}</p>
+					<p id="nice">{name.toLowerCase() === "matteo" ? "Bienvenue, cher beta-testeur!" : `Salut, ${name}`}</p>
 					<h3 id="round"></h3>
 					<h3 id="Replay" onClick={()=>window.location.reload(false)}><a href="#">Rejouer</a></h3>
 					<PlayerPanel />
